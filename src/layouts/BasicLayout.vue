@@ -43,6 +43,24 @@
         </a-dropdown>
       </div>
     </template>
+    <!-- 加上这段代码就报错了 -->
+    <!-- custom menu-item -->
+    <template #menuItemRender="{ item, icon }">
+      <a-menu-item
+        :key="item.path"
+        :disabled="item.meta?.disabled"
+        :danger="item.meta?.danger"
+        :icon="icon"
+      >
+        <router-link :to="{ path: item.path }">
+          <div class="a-menu-item-title">
+            <a-badge count="5" dot>
+              {{ item.meta.title }}
+            </a-badge>
+          </div>
+        </router-link>
+      </a-menu-item>
+    </template>
     <router-view />
   </pro-layout>
 </template>
@@ -51,7 +69,7 @@
 import { defineComponent, reactive, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { getMenuData, clearMenuItem } from '@ant-design-vue/pro-layout'
-import { Avatar, Dropdown, Menu } from 'ant-design-vue';
+import { Avatar, Dropdown, Menu, Badge } from 'ant-design-vue';
 import { UserOutlined, SettingOutlined, LogoutOutlined } from '@ant-design/icons-vue'
 import type { RouteContextProps } from '@ant-design-vue/pro-layout'
 
@@ -66,6 +84,7 @@ export default defineComponent({
     [Dropdown.name]: Dropdown,
     [Menu.name]: Menu,
     [Menu.Item.name]: Menu.Item,
+    [Badge.name]: Badge
   },
   setup() {
     const router = useRouter()
